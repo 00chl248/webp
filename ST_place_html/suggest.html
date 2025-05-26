@@ -1,0 +1,243 @@
+<!-- suggest.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>건의사항 | 여기과기대</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- 지도용 CDN (Leaflet.js) -->
+   
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.fullscreen@1.6.0/Control.FullScreen.css" />
+  <script src="https://unpkg.com/leaflet.fullscreen@1.6.0/Control.FullScreen.js"></script>
+
+
+
+  
+  <script>
+    function showForm(type) {
+      const infoPanel = document.getElementById("info-panel");
+      const placePanel = document.getElementById("place-panel");
+
+      if (type === "info") {
+        infoPanel.style.display = "block";
+        placePanel.style.display = "none";
+      } else if (type === "place") {
+        infoPanel.style.display = "none";
+        placePanel.style.display = "block";
+      }
+    }
+
+    function submitSuggestion(event, type) {
+      event.preventDefault();
+
+      const textArea = document.getElementById(type + "-text"); //  변수명 수정
+      const text = textArea.value;
+
+      if (text.trim() === "") {
+        alert("내용을 입력해주세요.");
+        return;
+      }
+
+      alert(`${type === 'info' ? '정보수정' : '장소추천'} 건의가 제출되었습니다!`);
+
+      textArea.value = ""; // 오류 원인: 여기를 textArea로 바꿔야 함
+
+      // 폼 닫기
+      if (type === "info") {
+        document.getElementById("info-panel").style.display = "none";
+      } else {
+        document.getElementById("place-panel").style.display = "none";
+      }
+    }
+  
+
+  
+    let mapInitialized = false;
+    let map, marker;
+
+    function handleBuildingChange(event) {
+      const selected = event.target.value;
+      const mapContainer = document.getElementById("map-container");
+
+      if (selected === "건물 아님") {
+        mapContainer.style.display = "block";
+
+        // 지도 최초 1회만 초기화
+        if (!mapInitialized) {
+          map = L.map('map', {
+            center: [37.631814, 127.077401],
+            zoom: 17,
+            fullscreenControl: true // ⛶ 전체화면 버튼 활성화
+          });
+          // 프론티어관 위치
+
+
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+          }).addTo(map);
+
+          map.on('click', function (e) {
+            const { lat, lng } = e.latlng;
+            if (!marker) {
+              marker = L.marker([lat, lng]).addTo(map);
+            } else {
+              marker.setLatLng([lat, lng]);
+            }
+
+            //좌표를 hidden input에 저장
+            document.getElementById("lat").value = lat;
+            document.getElementById("lng").value = lng;
+
+            console.log("핀 좌표:", lat, lng);
+          });
+
+
+          mapInitialized = true;
+        }
+      } else {
+        mapContainer.style.display = "none";
+      }
+    }
+  
+
+  
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('active');
+    }
+
+    window.addEventListener('click', function (e) {
+      const sidebar = document.getElementById('sidebar');
+      const icon = document.querySelector('.category-icon');
+      if (
+        sidebar.classList.contains('active') &&
+        !sidebar.contains(e.target) &&
+        !icon.contains(e.target)
+      ) {
+        sidebar.classList.remove('active');
+      }
+    });
+  </script>
+
+
+
+</head>
+<body>
+
+
+  
+  <div class="navbar">
+    <div class="navbar-inner">
+
+      <div class="logo">   
+        <a href="team.html">
+          <img src="im01.png" alt="로고" />
+        </a>
+      </div>
+
+      <!-- <div class="category-icon" onclick="history.back()">←</div> -->
+      <div class="category-icon" onclick="toggleSidebar()">☰</div>
+
+    </div>
+  </div>
+
+  <!-- ===== 사이드 메뉴 ===== -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-close" onclick="toggleSidebar()">✕</div>
+
+    <button class="login-button" id="loginBtn">회원가입 / 로그인</button>
+
+    <ul>
+      <li>마이 플레이스</li>
+      <li onclick="location.href='suggest.html'">건의사항</li>
+      <li>전체 지도</li>
+    </ul>
+  </div>
+
+
+  <div class="main-content" style="display: flex; align-items: flex-start; gap: 30px;">
+    
+    <!-- 🔹 왼쪽: 정보 수정 폼 -->
+    <div id="info-panel" style="display: none; width: 35%;">
+      <div class="search-container">
+
+
+        <div class="search-title">정보 수정 건의</div>
+        <form onsubmit="submitSuggestion(event, 'info')">
+          <textarea id="info-text" rows="8" style="width: 100%; border-radius: 8px; padding: 1rem; border: 1px solid #ccc;"></textarea>
+          <button class="search-button" type="submit">제출하기</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 🔸 가운데: 카드 2개 -->
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <div class="suggestion-option" onclick="showForm('info')">
+        <img src="info.png" alt="정보수정">
+        <span>정보수정</span>
+      </div>
+      <div class="suggestion-option" onclick="showForm('place')">
+        <img src="place.png" alt="장소추천">
+        <span>장소추천</span>
+      </div>
+    </div>
+
+    <!-- 🔹 오른쪽: 장소 추천 폼 -->
+    <div id="place-panel" style="display: none; width: 35%;">
+      <div class="search-container">
+        <div class="search-title">장소 추천 건의</div>
+        <hr>
+        <br/>
+        <form onsubmit="submitSuggestion(event, 'place')">
+
+          <!-- 2. 건물 선택 (라디오 버튼) -->
+          <label style=" display: block; margin-bottom: 0.5rem;">추천장소 위치</label>
+
+          <div style="margin-bottom: 1rem;">
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;" onchange="handleBuildingChange(event)">
+              <label><input type="radio" name="building" value="프론티어관"> 프론티어관</label>
+              <label><input type="radio" name="building" value="창의관"> 하이테크관</label>
+              <label><input type="radio" name="building" value="과학관"> 제 1학생회관</label>
+              <label><input type="radio" name="building" value="예술관"> 도서관</label>
+              <label><input type="radio" name="building" value="건물 아님"> 건물 아님</label>
+            </div>
+          </div>
+
+          <!-- 1. 장소 이름 -->
+
+          <input type="text" placeholder="추천할 장소 상세 위치(ex.프론티어관 3층 공부책상 있는 곳)" style="width: 100%; padding: 0.8rem; margin-bottom: 1rem; border-radius: 8px; border: 1px solid #ccc;" id="place-name">
+
+          <!-- 2. 추천 이유 -->
+          <label style=" display: block; margin-bottom: 0.5rem;">추천이유</label>
+          <textarea id="place-text" rows="5" placeholder="추천 이유를 적어주세요 (예: 조용하고 공부하기 좋아요!)" style="width: 100%; padding: 1rem; border-radius: 8px; border: 1px solid #ccc;"></textarea>
+
+          <!-- 지도 영역 (초기에는 숨김) -->
+          <div id="map-container" style="width: 100%; height: 300px; margin-bottom: 1rem; display: none;">
+            <div id="map" style="width: 100%; height: 100%; border-radius: 12px;"></div>
+          </div>
+
+          <!-- 숨겨진 좌표 저장용 input -->
+          <input type="hidden" id="lat" name="lat">
+          <input type="hidden" id="lng" name="lng">
+
+          <!-- 4. 이미지 업로드 -->
+          <div style="margin-top: 1rem;">
+            <label for="place-image">사진 업로드</label><br>
+            <input type="file" id="place-image" accept="image/*" onchange="previewImage(event)">
+            <img id="image-preview" src="#" alt="미리보기" style="display: none; margin-top: 10px; max-width: 100%;">
+          </div>
+
+          <!-- 제출 -->
+          <br>
+          <button class="search-button" type="submit" style="margin-top: 1rem;">제출하기</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+</body>
+</html>
