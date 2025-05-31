@@ -227,3 +227,94 @@
       font-weight: bold;
       font-size: 1rem;
     }
+
+/* ============================================
+   📌 My Place & Comments 전용 스타일 (추가됨)
+============================================ */
+
+/* 전체 콘텐츠 레이아웃 */
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* 페이지 타이틀 */
+.page-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 2rem 0;
+}
+
+/* 섹션 박스 (흰 배경, 둥근 테두리, 그림자) */
+.section-box {
+  background-color: white;
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  width: 100%;
+}
+
+/* 섹션 제목 */
+.section-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 0.5rem;
+}
+
+/* 비어있는 안내 메시지 */
+.placeholder {
+  color: #999;
+  font-size: 1rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* 가로 스크롤 카드 컨테이너 */
+.card-scroll-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  padding-bottom: 8px;
+  scroll-snap-type: x mandatory;
+}
+.card-scroll-container::-webkit-scrollbar {
+  height: 6px;
+}
+.card-scroll-container::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+/* 카드 요소 */
+.card-scroll-container .card {
+  flex: 0 0 auto;
+  width: 240px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 1rem;
+  scroll-snap-align: start;
+}
+.card-scroll-container .card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.card-scroll-container .card h3 {
+  margin: 0 0 6px;
+  font-size: 1.1rem;
+}
+.card-scroll-container .card p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
