@@ -11,33 +11,35 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      overflow-x: hidden; /* 👈 가로 스크롤 막기 */
     }
 
-    .navbar {
-      width: 100%;
-      background-color: #ffffff;
-      border-bottom: 1px solid #e0e0e0;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      position: relative;
-      z-index: 100;
-    }
+.navbar {
+  width: 100%;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 100;
+}
 
-    .navbar-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 1.5rem;
-    }
+.navbar-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0; 
+  margin: 0 1rem; 
+}
 
-    .logo img {
-      height: 36px;
-      object-fit: contain;
-    }
+.logo img {
+  height: 36px;
+  object-fit: contain;
+}
 
-    .category-icon {
-      font-size: 1.4rem;
-      cursor: pointer;
-    }
+.category-icon {
+  font-size: 1.4rem;
+  cursor: pointer;
+}
 
     /* ===== 슬라이드 메뉴 ===== */
     .sidebar {
@@ -229,17 +231,19 @@
     }
 
 /* ============================================
-   📌 My Place & Comments 전용 스타일 (추가됨)
+   📌 My Place & Comments 전용 스타일
 ============================================ */
 
 /* 전체 콘텐츠 레이아웃 */
 .main-content {
-  max-width: 1200px;
+  max-width: 100vw; /* ✅ 전체 화면 기준으로 */
   margin: 0 auto;
   padding: 2rem 1rem 4rem;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  box-sizing: border-box;
+  overflow-x: hidden; /* ✅ 화면 밖 넘침 방지 */
 }
 
 /* 페이지 타이틀 */
@@ -250,7 +254,7 @@
   margin: 2rem 0;
 }
 
-/* 섹션 박스 (흰 배경, 둥근 테두리, 그림자) */
+/* 섹션 박스 */
 .section-box {
   background-color: white;
   border-radius: 20px;
@@ -258,6 +262,8 @@
   margin-bottom: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   width: 100%;
+  overflow-x: hidden; /* ✅ 넘치는 스크롤 방지 */
+  box-sizing: border-box;
 }
 
 /* 섹션 제목 */
@@ -278,43 +284,79 @@
 }
 
 /* 가로 스크롤 카드 컨테이너 */
-.card-scroll-container {
+.card-scroll-container,
+#myPlacesContainer {
   display: flex;
+  flex-wrap: nowrap;
   overflow-x: auto;
   gap: 16px;
   padding-bottom: 8px;
   scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
-.card-scroll-container::-webkit-scrollbar {
+
+/* 스크롤바 스타일 */
+.card-scroll-container::-webkit-scrollbar,
+#myPlacesContainer::-webkit-scrollbar {
   height: 6px;
 }
-.card-scroll-container::-webkit-scrollbar-thumb {
+
+.card-scroll-container::-webkit-scrollbar-thumb,
+#myPlacesContainer::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 3px;
 }
 
 /* 카드 요소 */
-.card-scroll-container .card {
+.card-scroll-container .card,
+#myPlacesContainer .card {
   flex: 0 0 auto;
   width: 240px;
+  min-width: 240px;
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   padding: 1rem;
   scroll-snap-align: start;
+  margin-bottom: 0;
+  box-sizing: border-box;
 }
-.card-scroll-container .card img {
+
+.card-scroll-container .card img,
+#myPlacesContainer .card img {
   width: 100%;
   border-radius: 8px;
   margin-bottom: 10px;
 }
-.card-scroll-container .card h3 {
+
+.card-scroll-container .card h3,
+#myPlacesContainer .card h3 {
   margin: 0 0 6px;
   font-size: 1.1rem;
 }
-.card-scroll-container .card p {
+
+.card-scroll-container .card p,
+#myPlacesContainer .card p {
   margin: 0;
   font-size: 0.9rem;
   color: #555;
 }
 
+/* (예비용) card-container */
+#card-container {
+  display: flex;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  gap: 20px;
+  padding-bottom: 10px;
+  scroll-snap-type: x mandatory;
+  box-sizing: border-box;
+}
+
+#card-container .card {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+}
