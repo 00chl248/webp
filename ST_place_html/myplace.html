@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Place & Comments</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+  <script>
+    Kakao.init('7b0b8007e60a8f79ca197b522ecc0040');
+  </script>
+</head>
+<body>
+
+  <!-- 상단 바 -->
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="logo">
+        <a href="main.html"><img src="im01.png" alt="로고" /></a>
+      </div>
+      <div class="category-icon" onclick="toggleSidebar()">☰</div>
+    </div>
+  </div>
+
+  <!-- 사이드바 -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-close" onclick="toggleSidebar()">✕</div>
+    <button class="login-button" id="loginBtn">회원가입 / 로그인</button>
+    <ul>
+      <li>My Place & Comments</li>
+      <li>건의사항</li>
+      <li id="withdrawBtn" style="display: none; color: gray;">회원탈퇴</li>
+    </ul>
+  </div>
+
+  <!-- 메인 콘텐츠 -->
+  <div class="main-content">
+    <h2 class="page-title">📍 My Place & Comments</h2>
+
+    <!-- My Places -->
+    <div class="section-box">
+      <div class="section-title">My Places</div>
+      <div id="myPlacesContainer" class="card-scroll-container">
+        <!-- 카드가 JS로 추가됨 -->
+      </div>
+    </div>
+
+    <!-- My Comments -->
+    <div class="section-box">
+      <div class="section-title">My Comments</div>
+      <div class="placeholder">아직 작성한 센텐스가 없습니다.</div>
+    </div>
+  </div>
+
+  <!-- 스크립트 -->
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('active');
+    }
+
+    window.addEventListener('click', function (e) {
+      const sidebar = document.getElementById('sidebar');
+      const icon = document.querySelector('.category-icon');
+      if (sidebar.classList.contains('active') &&
+          !sidebar.contains(e.target) &&
+          !icon.contains(e.target)) {
+        sidebar.classList.remove('active');
+      }
+    });
+
+    function loginWithKakao() {
+      Kakao.Auth.login({
+        success: function () {
+          Kakao.API.request({
+            url: '/v2/user/me',
+            success: function () {
+              document.getElementById('loginBtn').textContent = '로그아웃';
+              document.getElementById('loginBtn').onclick = logoutFromKakao;
+              document.getElementById('withdrawBtn').style.display = 'block';
+            }
+          });
+        },
+        fail: function (err) {
+          alert('로그인 실패: ' + JSON.stringify(err));
+        }
+      });
+    }
+
+    function logoutFromKakao() {
+      Kakao.Auth.logout(function () {
+        document.getElementById('loginBtn').textContent = '회원가입 / 로그인';
+        document.getElementById('loginBtn').onclick = loginWithKakao;
+        document.getElementById('withdrawBtn').style.display = 'none';
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const loginBtn = document.getElementById('loginBtn');
+      const withdrawBtn = document.getElementById('withdrawBtn');
+      loginBtn.onclick = loginWithKakao;
+      withdrawBtn.onclick = function () {
+        alert('회원탈퇴는 고객센터를 통해 처리됩니다.');
+      };
+
+      const myPlaces = JSON.parse(localStorage.getItem('myPlaces')) || [];
+      const container = document.getElementById('myPlacesContainer');
+
+      if (myPlaces.length === 0) {
+        container.innerHTML = '<p class="placeholder">저장된 장소가 없습니다.</p>';
+      } else {
+        myPlaces.forEach(place => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <img src="${place.image}" alt="${place.name}" />
+            <h3>${place.name}</h3>
+            <p>${place.description}</p>
+          `;
+          container.appendChild(card);
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>
