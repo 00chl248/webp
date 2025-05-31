@@ -14,14 +14,19 @@
 <body>
 
   <!-- ===== 상단바 ===== -->
-  <div class="navbar">
-    <div class="navbar-inner">
-      <div class="logo">
+<div class="navbar">
+  <div class="navbar-inner">
+    <!-- ✅ 로고 클릭 시 main.html로 이동 -->
+    <div class="logo">
+      <a href="main.html">
         <img src="im01.png" alt="로고" />
-      </div>
-      <div class="category-icon" onclick="toggleSidebar()">☰</div>
+      </a>
     </div>
+
+    <!-- ☰ 아이콘: 사이드바 열기 -->
+    <div class="category-icon" onclick="toggleSidebar()">☰</div>
   </div>
+</div>
 
   <!-- ===== 사이드 메뉴 ===== -->
   <div class="sidebar" id="sidebar">
@@ -30,14 +35,14 @@
     <!-- ✅ 회원가입 / 로그인 버튼 -->
     <button class="login-button" id="loginBtn" >회원가입 / 로그인</button>
 
-    <!-- 메뉴 리스트 -->
-    <ul>
-      <li>마이 플레이스</li>
-      <li onclick="location.href='suggest.html'">건의사항</li>
-      <li>전체 지도</li>
-      <li id="withdrawBtn" style="display: none; color: gray;">회원탈퇴</li>
-    </ul>
-  </div>
+  <!-- ✅ 메뉴 리스트 -->
+  <ul>
+    <!-- ✅ 클릭 시 myplace.html로 이동 -->
+    <li onclick="location.href='myplace.html'">My Place & Comments</li>
+    <li>건의사항</li>
+    <li id="withdrawBtn" style="display: none; color: gray;">회원탈퇴</li>
+  </ul>
+</div>
 
   <!-- ===== 메인 콘텐츠 ===== -->
   <div class="main-content">
