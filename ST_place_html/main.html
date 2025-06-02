@@ -24,19 +24,24 @@
 <body>
 
   <!-- ===== 상단바 ===== -->
-<div class="navbar">
-  <div class="navbar-inner">
-    <!-- ✅ 로고 클릭 시 main.html로 이동 -->
-    <div class="logo">
-      <a href="main.html">
-        <img src="im01.png" alt="로고" />
-      </a>
-    </div>
+  <div class="navbar">
+    <div class="navbar-inner">
+      <!-- 왼쪽: 로고 -->
+      <div class="logo">
+        <a href="main.html">
+          <img src="im01.png" alt="로고" />
+        </a>
+      </div>
 
-    <!-- ☰ 아이콘: 사이드바 열기 -->
-    <div class="category-icon" onclick="toggleSidebar()">☰</div>
+      <!-- 오른쪽: My Place + 로그인 버튼 가로 배치 -->
+      <div class="nav-right">
+        <a href="myplace.html" class="nav-item">My Place</a>
+        <button class="login-button" id="loginBtn">회원가입 / 로그인</button>
+      </div>
+    </div>
   </div>
-</div>
+
+
 
   <!-- ===== 사이드 메뉴 ===== -->
   <div class="sidebar" id="sidebar">
@@ -49,8 +54,6 @@
   <ul>
     <!-- ✅ 클릭 시 myplace.html로 이동 -->
     <li onclick="location.href='myplace.html'">My Place & Comments</li>
-    <li onclick="location.href='suggest.html'">건의사항</li>
-    <li id="withdrawBtn" style="display: none; color: gray;">회원탈퇴</li>
   </ul>
 </div>
 

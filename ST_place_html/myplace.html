@@ -16,23 +16,15 @@
       <div class="logo">
         <a href="main.html"><img src="im01.png" alt="로고" /></a>
       </div>
-      <div class="category-icon" onclick="toggleSidebar()">☰</div>
+      <div class="nav-right">
+        <a href="myplace.html" class="nav-item">My Place</a>
+        <button class="login-button" id="loginBtn">회원가입 / 로그인</button>
+      </div>
     </div>
   </div>
 
-  <!-- 사이드바 -->
-  <div class="sidebar" id="sidebar">
-    <div class="sidebar-close" onclick="toggleSidebar()">✕</div>
-    <button class="login-button" id="loginBtn">회원가입 / 로그인</button>
-    <ul>
-      <li>My Place & Comments</li>
-      <li onclick="location.href='suggest.html'">건의사항</li>
-      <li id="withdrawBtn" style="display: none; color: gray;">회원탈퇴</li>
-    </ul>
-  </div>
-
   <!-- 메인 콘텐츠 -->
-  <div class="main-content">
+  <div class="main-content myplace">
     <h2 class="page-title">📍 My Place & Comments</h2>
 
     <!-- My Places -->
@@ -50,105 +42,62 @@
     </div>
   </div>
 
- <script>
-  function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    sidebar.classList.toggle('active');
-  }
-
-  window.addEventListener('click', function (e) {
-    const sidebar = document.getElementById('sidebar');
-    const icon = document.querySelector('.category-icon');
-    if (sidebar.classList.contains('active') &&
-        !sidebar.contains(e.target) &&
-        !icon.contains(e.target)) {
-      sidebar.classList.remove('active');
-    }
-  });
-
-  function loginWithKakao() {
-    Kakao.Auth.login({
-      success: function () {
-        Kakao.API.request({
-          url: '/v2/user/me',
-          success: function () {
-            document.getElementById('loginBtn').textContent = '로그아웃';
-            document.getElementById('loginBtn').onclick = logoutFromKakao;
-            document.getElementById('withdrawBtn').style.display = 'block';
-          }
-        });
-      },
-      fail: function (err) {
-        alert('로그인 실패: ' + JSON.stringify(err));
-      }
-    });
-  }
-
-  function logoutFromKakao() {
-    Kakao.Auth.logout(function () {
-      document.getElementById('loginBtn').textContent = '회원가입 / 로그인';
-      document.getElementById('loginBtn').onclick = loginWithKakao;
-      document.getElementById('withdrawBtn').style.display = 'none';
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    const loginBtn = document.getElementById('loginBtn');
-    const withdrawBtn = document.getElementById('withdrawBtn');
-    loginBtn.onclick = loginWithKakao;
-    withdrawBtn.onclick = function () {
-      alert('회원탈퇴는 고객센터를 통해 처리됩니다.');
-    };
-
-    // 테스트오ㅛㅇ
-    fetch('../places/places.json')
-  .then(res => {
-    if (!res.ok) throw new Error('JSON 파일을 찾을 수 없음');
-    return res.json();
-  })
-  .then(data => {
-    const container = document.getElementById('myPlacesContainer');
-
-    if (!data || data.length === 0) {
-      container.innerHTML = '<p class="placeholder">저장된 장소가 없습니다.</p>';
-    } else {
-      data.forEach(place => {
-  const card = document.createElement('div');
-  card.className = 'card';
-  card.innerHTML = `
-    <img src="../places/${place.image}" alt="${place.name}" />
-    <h3>${place.name}</h3>
-    <p>${place.desc}</p>
-  `;
-  container.appendChild(card);
-});
-
-    }
-  })
-  .catch(err => {
-    console.error('장소 데이터를 불러오는 중 오류가 발생했습니다:', err);
-  });
-
-
-    /*
-    // ✅ 원래는 localStorage에서 찜한 장소만 가져오는 코드
-    const myPlaces = JSON.parse(localStorage.getItem('myPlaces')) || [];
-    const container = document.getElementById('myPlacesContainer');
-
-    if (myPlaces.length === 0) {
-      container.innerHTML = '<p class="placeholder">저장된 장소가 없습니다.</p>';
-    } else {
-      myPlaces.forEach(place => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-          <img src="../place_images/${place.image}" alt="${place.name}" />
-          <h3>${place.name}</h3>
-          <p>${place.description}</p>
-        `;
-        container.appendChild(card);
+  <script>
+    function loginWithKakao() {
+      Kakao.Auth.login({
+        success: function () {
+          Kakao.API.request({
+            url: '/v2/user/me',
+            success: function () {
+              document.getElementById('loginBtn').textContent = '로그아웃';
+              document.getElementById('loginBtn').onclick = logoutFromKakao;
+            }
+          });
+        },
+        fail: function (err) {
+          alert('로그인 실패: ' + JSON.stringify(err));
+        }
       });
     }
-    */
-  });
-</script>
+
+    function logoutFromKakao() {
+      Kakao.Auth.logout(function () {
+        document.getElementById('loginBtn').textContent = '회원가입 / 로그인';
+        document.getElementById('loginBtn').onclick = loginWithKakao;
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const loginBtn = document.getElementById('loginBtn');
+      loginBtn.onclick = loginWithKakao;
+
+      fetch('../places/places.json')
+        .then(res => {
+          if (!res.ok) throw new Error('JSON 파일을 찾을 수 없음');
+          return res.json();
+        })
+        .then(data => {
+          const container = document.getElementById('myPlacesContainer');
+
+          if (!data || data.length === 0) {
+            container.innerHTML = '<p class="placeholder">저장된 장소가 없습니다.</p>';
+          } else {
+            data.forEach(place => {
+              const card = document.createElement('div');
+              card.className = 'card';
+              card.innerHTML = `
+                <img src="../places/place_images/${place.image}" alt="${place.name}" />
+                <h3>${place.name}</h3>
+                <p>${place.desc}</p>
+              `;
+              container.appendChild(card);
+            });
+          }
+        })
+        .catch(err => {
+          console.error('장소 데이터를 불러오는 중 오류가 발생했습니다:', err);
+        });
+    });
+  </script>
+</body>
+</html>
