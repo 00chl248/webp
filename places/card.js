@@ -51,26 +51,36 @@ function showDetail(place) {
 }
 
 function showDetail(place) {
-  // 기존 모달이 있다면 제거
   const oldModal = document.getElementById('modal-overlay');
   if (oldModal) oldModal.remove();
 
-  // 오버레이 생성
   const overlay = document.createElement('div');
   overlay.id = 'modal-overlay';
 
-  // 모달 내용
   const modal = document.createElement('div');
   modal.id = 'modal-box';
+
+  // 찜 여부 확인 (localStorage에 저장된 값 확인)
+  const storageKey = `liked:${place.name}`;
+  let isLiked = localStorage.getItem(storageKey) === 'true';
+
   modal.innerHTML = `
     <span id="modal-close">&times;</span>
     <h2>${place.name}</h2>
     <img src="${place.image}" alt="${place.name}" width="250">
     <p><strong>위치:</strong> ${place.location}</p>
     <p><strong>설명:</strong> ${place.desc}</p>
+    <button id="like-button">${isLiked ? '❤️ 찜 취소' : '🤍 찜하기'}</button>
   `;
 
-  // 모달 닫기 (X 버튼 또는 바깥 클릭)
+  // 찜 버튼 클릭 시 localStorage에 저장/삭제
+  modal.querySelector('#like-button').addEventListener('click', function () {
+    isLiked = !isLiked;
+    localStorage.setItem(storageKey, isLiked);
+    this.textContent = isLiked ? '❤️ 찜 취소' : '🤍 찜하기';
+  });
+
+  // 닫기 이벤트
   overlay.addEventListener('click', e => {
     if (e.target === overlay || e.target.id === 'modal-close') {
       overlay.remove();
@@ -80,3 +90,22 @@ function showDetail(place) {
   overlay.appendChild(modal);
   document.body.appendChild(overlay);
 }
+
+//카드 태그로 필터링 로직
+const filter = JSON.parse(localStorage.getItem('filter'));
+
+fetch('data/data.json')
+  .then(res => res.json())
+  .then(data => {
+    const filtered = data.filter(place => {
+      const tags = place.tags;
+
+      const timeMatch = !filter.time || tags.time.includes(filter.time);
+      const purposeMatch = !filter.purpose || tags.purpose.includes(filter.purpose);
+      const moodMatch = !filter.mood || tags.mood.includes(filter.mood);
+
+      return timeMatch && purposeMatch && moodMatch;
+    });
+
+    renderCards(filtered);
+  });
