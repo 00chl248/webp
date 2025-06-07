@@ -13,7 +13,7 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
 
-  background-image: url("../places/place_images/bgr.png");
+  background-image: url("/places/place_images/bgr.png");
   background-size: cover;                   /* 화면 전체에 맞춤 */
   background-repeat: no-repeat;             /* 반복 없음 */
   background-position: center center;       /* 중앙 정렬 */
