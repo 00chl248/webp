@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>장소 상세 보기</title>
+  <link rel="stylesheet" href="/ST_place_css/style.css" />
+  <style>
+    .detail-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      background-color: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .detail-image {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+    .review-box {
+      margin-top: 2rem;
+    }
+    .review-list li {
+      background: #f0f0f0;
+      margin-bottom: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="detail-container">
+    <h1 id="placeName">장소명</h1>
+    <img id="placeImage" class="detail-image" alt="장소 이미지" />
+    <p id="placeLocation"></p>
+    <p id="placeDesc"></p>
+
+    <div class="review-box">
+      <h3>✍️ 리뷰 남기기</h3>
+      <textarea id="reviewInput" rows="3" placeholder="리뷰를 입력하세요..." style="width: 100%;"></textarea>
+      <button onclick="saveReview()" style="margin-top: 0.5rem;">리뷰 등록</button>
+
+      <h3 style="margin-top: 2rem;">📋 리뷰 목록</h3>
+      <ul id="reviewList" class="review-list"></ul>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const place = JSON.parse(localStorage.getItem("selectedPlace"));
+      if (!place) {
+        document.body.innerHTML = "<p>장소 정보가 없습니다.</p>";
+        return;
+      }
+
+      document.getElementById("placeName").textContent = place.name;
+      document.getElementById("placeLocation").textContent = place.location;
+      document.getElementById("placeDesc").textContent = place.desc;
+      document.getElementById("placeImage").src = "/places/" + place.image;
+
+      loadReviews(place.name);
+    });
+
+    function saveReview() {
+      const input = document.getElementById("reviewInput");
+      const text = input.value.trim();
+      if (!text) return alert("리뷰를 입력하세요!");
+
+      const place = JSON.parse(localStorage.getItem("selectedPlace"));
+      const name = place.name;
+
+      const reviews = JSON.parse(localStorage.getItem("reviews") || "{}");
+      if (!reviews[name]) reviews[name] = [];
+      reviews[name].push(text);
+
+      localStorage.setItem("reviews", JSON.stringify(reviews));
+      input.value = "";
+      loadReviews(name);
+    }
+
+    function loadReviews(name) {
+      const reviewList = document.getElementById("reviewList");
+      reviewList.innerHTML = "";
+
+      const reviews = JSON.parse(localStorage.getItem("reviews") || "{}");
+      if (reviews[name]) {
+        reviews[name].forEach((rev) => {
+          const li = document.createElement("li");
+          li.textContent = rev;
+          reviewList.appendChild(li);
+        });
+      }
+    }
+  </script>
+</body>
+</html>

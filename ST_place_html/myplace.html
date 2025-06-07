@@ -90,6 +90,12 @@
                 <h3>${place.name}</h3>
                 <p>${place.desc}</p>
               `;
+
+              card.addEventListener('click', () => {
+                localStorage.setItem('selectedPlace', JSON.stringify(place));
+                location.href = '/ST_place_html/place_detail.html';
+              });
+
               container.appendChild(card);
             });
           }
