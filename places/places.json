@@ -3,27 +3,47 @@
     "name": "와글와글",
     "location": "별관도서관 2층",
     "desc": "친구들과 대화하며 공부하기 좋은 공간이에요.",
-    "image": "place_images/waggle.png"
+    "image": "waggle.png",
+    "tags": {
+      "time": ["afternoon", "evening"],
+      "purpose": ["study"],
+      "mood": ["noisy", "nomatter"]
+    }
   },
 
   {
     "name": "붕어방",
     "location": "과기대 안쪽",
     "desc": "햇살 아래에서 산책하기 좋은 호수",
-    "image": "place_images/boongBang.png"
+    "image": "boongBang.png",
+    "tags": {
+      "time": ["morning", "lunch", "afternoon", "evening"],
+      "purpose": ["rest", "date"],
+      "mood": ["quiet", "noisy", "nomatter"]
+    }
   },
 
   {
     "name": "그룹 스터디룸",
     "location": "별관도서관 2층",
     "desc": "조용한 곳에서 팀프로젝트 진행하기 좋은 공간이에요.",
-    "image": "place_images/groupStudyRoom.png"
+    "image": "groupStudyRoom.png",
+    "tags": {
+      "time": ["morning", "lunch", "afternoon", "evening"],
+      "purpose": ["study"],
+      "mood": ["quiet"]
+    }
   },
 
   {
     "name": "남우자리 / 여우자리",
     "location": "제 1 학생회관 217호 / 220호",
     "desc": "공강 및 휴식시간에 편하게 누워서 쉴 수 있는 공간(남학생 전용 / 여학생 전용)",
-    "image": "place_images/namwooYeowoo.png"
+    "image": "namwooYeowoo.png",
+    "tags": {
+      "time": ["lunch", "afternoon"],
+      "purpose": ["rest"],
+      "mood": ["quiet"]
+    }
   }
 ]
