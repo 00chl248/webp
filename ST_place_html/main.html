@@ -64,7 +64,7 @@
 
       <div class="filter-group">
 
-        <select name="time">
+        <select name="time" id="time-select">
           <option value="">이용 시각을 선택해주세요!</option>
           <option value="morning">오전에</option>
           <option value="lunch">점심에</option>
@@ -72,7 +72,7 @@
           <option value="evening">저녁에</option>
         </select>
         
-        <select name="purpose">
+        <select name="purpose" id="purpose-select">
           <option value="">용도를 선택해주세요!</option>
           <option value="study">공부하려는데</option>
           <option value="date">데이트하려는데</option>
@@ -80,7 +80,7 @@
           <option value="rest">쉬고 싶은데</option>
         </select>
 
-        <select name="mood">
+        <select name="mood" id="mood-select">
           <option value="">원하시는 분위기를 선택해주세요!</option>
           <option value="quiet">조용한 곳!</option>
           <option value="noisy">떠들썩한 곳!</option>
@@ -88,10 +88,13 @@
         </select>
       </div>
 
-      <button class="search-button">출발!</button>
+      <button class="search-button" id="search-button">출발!</button>
     </div>
 
   </div>
+
+  <!-- 필터 선택 상태 유지 기능(선택한 값 표시) -->
+  <div id="filter-summary" class="filter-summary"></div>
 
 
 
@@ -167,6 +170,19 @@
     withdrawBtn.addEventListener('click', function () {
       alert('회원탈퇴는 고객센터를 통해 처리됩니다.');
     });
+  });
+
+  //'출발' 버튼 클릭 시 필터 적용 후 listed_place.html로 이동
+  document.getElementById('search-button').addEventListener('click', () => {
+    const time = document.getElementById('time-select').value;
+    const purpose = document.getElementById('purpose-select').value;
+    const mood = document.getElementById('mood-select').value;
+
+    const filter = { time, purpose, mood };
+    localStorage.setItem('filter', JSON.stringify(filter));
+
+    // 결과 페이지로 이동
+    window.location.href = '/ST_place_html/listed_place.html'; 
   });
 </script>
 

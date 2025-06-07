@@ -1,0 +1,63 @@
+/* 필터 요약 영역 */
+#filter-summary {
+  background-color: #f9f9f9;
+  border-left: 4px solid #4caf50;
+  padding: 12px 16px;
+  margin: 20px 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* 필터 요약 내부 목록 */
+#filter-summary ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 8px 0 0 0;
+}
+
+#filter-summary li::before {
+  content: '• ';
+  color: #4caf50;
+}
+
+/* 정렬 셀렉트 */
+#sort-select {
+  padding: 6px 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* 결과 없음 문구 */
+#no-results {
+  text-align: center;
+  font-size: 16px;
+  color: #888;
+  margin-top: 30px;
+}
+
+/* 카드 스타일 (이미 있는 클래스 이름 유지) */
+.card {
+  margin-bottom: 20px;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+  margin-top: 0;
+}
+
+.card small {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #666;
+}
