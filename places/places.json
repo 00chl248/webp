@@ -19,7 +19,7 @@
     "tags": {
       "time": ["morning", "lunch", "afternoon", "evening","whenever"],
       "purpose": ["rest", "date","whatever"],
-      "mood": ["quiet", "noisy", ,"nomattermood"]
+      "mood": ["quiet", "noisy" ,"nomattermood"]
     }
   },
 
