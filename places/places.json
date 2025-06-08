@@ -5,8 +5,8 @@
     "desc": "친구들과 대화하며 공부하기 좋은 공간이에요.",
     "image": "waggle.png",
     "tags": {
-      "time": ["afternoon", "evening"],
-      "purpose": ["study"],
+      "time": ["afternoon", "evening","whenever"],
+      "purpose": ["study","whatever"],
       "mood": ["noisy", "nomatter"]
     }
   },
@@ -17,9 +17,9 @@
     "desc": "햇살 아래에서 산책하기 좋은 호수",
     "image": "boongBang.png",
     "tags": {
-      "time": ["morning", "lunch", "afternoon", "evening"],
-      "purpose": ["rest", "date"],
-      "mood": ["quiet", "noisy", "nomatter"]
+      "time": ["morning", "lunch", "afternoon", "evening","whenever"],
+      "purpose": ["rest", "date","whatever"],
+      "mood": ["quiet", "noisy", ,"nomattermood"]
     }
   },
 
@@ -29,9 +29,9 @@
     "desc": "조용한 곳에서 팀프로젝트 진행하기 좋은 공간이에요.",
     "image": "groupStudyRoom.png",
     "tags": {
-      "time": ["morning", "lunch", "afternoon", "evening"],
-      "purpose": ["study"],
-      "mood": ["quiet"]
+      "time": ["morning", "lunch", "afternoon", "evening","whenever"],
+      "purpose": ["study","whatever"],
+      "mood": ["quiet","nomattermood"]
     }
   },
 
@@ -41,9 +41,9 @@
     "desc": "공강 및 휴식시간에 편하게 누워서 쉴 수 있는 공간(남학생 전용 / 여학생 전용)",
     "image": "namwooYeowoo.png",
     "tags": {
-      "time": ["lunch", "afternoon"],
-      "purpose": ["rest"],
-      "mood": ["quiet"]
+      "time": ["lunch", "afternoon","whenever"],
+      "purpose": ["rest","whatever"],
+      "mood": ["quiet","nomattermood"]
     }
   }
 ]
