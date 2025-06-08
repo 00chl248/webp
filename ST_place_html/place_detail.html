@@ -33,7 +33,9 @@
 </head>
 <body>
   <div class="detail-container">
-    <h1 id="placeName">장소명</h1>
+    <h1 id="placeName">장소명
+      <button id="likeBtn" style="font-size: 1rem; margin-left: 1rem;">🤍 찜하기</button>
+    </h1>
     <img id="placeImage" class="detail-image" alt="장소 이미지" />
     <p id="placeLocation"></p>
     <p id="placeDesc"></p>
@@ -56,12 +58,39 @@
         return;
       }
 
-      document.getElementById("placeName").textContent = place.name;
+      const name = place.name;
+      const likeBtn = document.getElementById("likeBtn");
+  
+      const title = document.getElementById("placeName");
+      title.childNodes[0].nodeValue = name + " ";
+      
       document.getElementById("placeLocation").textContent = place.location;
       document.getElementById("placeDesc").textContent = place.desc;
       document.getElementById("placeImage").src = "/places/" + place.image;
 
-      loadReviews(place.name);
+      const likedPlaces = JSON.parse(localStorage.getItem("likedPlaces") || "[]");
+  
+        const updateLikeBtn = () => {
+          const likedPlacesNow = JSON.parse(localStorage.getItem("likedPlaces") || "[]");
+          likeBtn.textContent = likedPlacesNow.includes(name) ? "💖 찜 완료" : "🤍 찜하기";
+        };
+
+  
+        updateLikeBtn();
+  
+        likeBtn.addEventListener("click", () => {
+          let likedPlaces = JSON.parse(localStorage.getItem("likedPlaces") || "[]");
+          if (likedPlaces.includes(name)) {
+            likedPlaces = likedPlaces.filter(p => p !== name);
+          } else {
+            likedPlaces.push(name);
+          }
+          localStorage.setItem("likedPlaces", JSON.stringify(likedPlaces));
+          updateLikeBtn();
+        });
+
+  
+        loadReviews(name);
     });
 
     function saveReview() {
